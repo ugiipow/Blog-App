@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<body style="background-color:#BFAA8C;"></body>
+    <header class="masthead">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class=" col-xs-9 col-md-7">
+                    <div class="site-heading">
+                        <h1> <FONT COLOR="#f5f5dc">Post it!</FONT> </h1>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </header>
+
+    <div class="container">
+        <div class="row">
+            
+            <!-- Blog Entries Column -->
+            <div class="col-md-8 mt-3 left">
+                {% for post in post_list %}
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            {% if post.image %}
+                                <img src="{{ post.image.url }}" class="img-responsive" >
+                            {% endif %}
+                            <h2 class="card-text" style="background-color:#E8DED1;">{{ post.title }}</h2>
+                            <p class="card-text text-muted h6">{{ post.author }} | {{ post.posted_on}}  </p>
+
+                            <p class="card-text">{{post.content|safe|slice:":200" }}</p>
+                            <a href="{% url 'post_detail' post.slug  %}" class="btn btn-primary" style="background-color:#A0816C;">Read More &rarr;</a>
+                        </div>
+
+                    </div>
+                {% endfor %}
+
+            </div>
+            {% block sidebar %}
+                {% include 'sidebar.html' %}
+            {% endblock sidebar %}
+        </div>
+    </div>
+    {% if is_paginated %}
+        <nav aria-label="Page navigation conatiner"></nav>
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li><a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo; PREV </a></li>
+            {% endif %}
+            {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}" class="page-link"> NEXT &raquo;</a></li>
+
+            {% endif %}
+        </ul>
+        </nav>
+        </div>
+    {% endif %}
+{%endblock%}

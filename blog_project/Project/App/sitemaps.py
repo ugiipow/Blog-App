@@ -11,4 +11,4 @@ class PostSitemap(Sitemap):
         return Post.objects.filter(status=1)
 
     def lastmod(self, obj):
-        return obj.updated_on
+        return obj.posted_on

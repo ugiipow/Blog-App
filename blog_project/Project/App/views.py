@@ -12,7 +12,7 @@ from .models import Post
 class PostList(generic.ListView):
     queryset = Post.objects.filter(status=1).order_by("-posted_on")
     template_name = "index.html"
-    paginate_by = 3
+    paginate_by = 5
 
 
 # class PostDetail(generic.DetailView):
@@ -30,16 +30,16 @@ def post_detail(request, slug):
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():
 
-            # Create Comment object but don't save to database yet
+            
             new_comment = comment_form.save(commit=False)
-            # Assign the current post to the comment
+            
             new_comment.post = post
-            # Save the comment to the database
+            
             new_comment.save()
     else:
         comment_form = CommentForm()
 
-    return render(
+    return render( #context tanımla
         request,
         template_name,
         {
@@ -49,17 +49,20 @@ def post_detail(request, slug):
             "comment_form": comment_form,
         },
     )
-def home(request):
-    context = {
-        'posts': Post.objects.all()
-    }
-    return render(request, 'blog/home.html', context)
+# def home(request):
+#     posts = Post.objects.filter(is_deleted = False)
+#     context = dict(
+#         posts = posts
+#     )
+    
+#     return render(request, 'blog/home.html', context)
 
 class PostListView(ListView):
     model = Post
-    template_name = 'blog/home.html'
+
     context_object_name = 'posts'
     ordering = ['-posted_on']
+    #blog_post = Post.objects.filter(is_deleted = False)
 
 class UserPostListView(ListView):
     model = Post
@@ -107,5 +110,15 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
-def about(request):
-    return render(request, 'blog/about.html', {'title': 'About'})
+# def about(request):
+#     return render(request, 'blog/about.html', {'title': 'About'})
+
+# def delete_post(request, post_id):
+#     post = get_object_or_404(Post, pk=post_id)
+#     post.is_deleted = True
+#     post.save()
+#     return redirect(request, 'post_list')
+
+# def post_list(request):
+#     posts = Post.objects.filter(is_deleted=False)
+#     return render(request, 'post_list.html', {'posts': posts})

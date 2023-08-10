@@ -26,8 +26,8 @@ class Post(models.Model):
   def get_absolute_url(self):
         return reverse("post_detail", kwargs={"slug": str(self.slug)})
   
-  def get_create_url(self):
-        return reverse('post:create', kwargs={'id': self.id})
+#   def get_create_url(self):
+#         return reverse('post:create', kwargs={'id': self.id})
 
   def get_update_url(self):
         return reverse('post:update', kwargs={'id': self.id})
